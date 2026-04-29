@@ -43,29 +43,29 @@ const CreateNote = () => {
         setIstouched({...istouched,[name]:true})
     }
 
-    const handleSubmit = async (e) => {
-    setIsLoading(true)
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIstouched({ topic: true, note: true })
 
     const validationErrors = validation(formData)
     if (Object.keys(validationErrors).length > 0) {
-        return setFormError(validationErrors)
+        setFormError(validationErrors)
+        setIsLoading(false)
+        return
     }
 
+    setIsLoading(true)
     try {
-        setcreateButton(true)
         const response = await handleCreateNote({ ...formData })
         if (response.success) {
             alert("Note created successfully!")
             dispatch(hideModel())
-            setIsLoading(false)
         } else {
             alert(response.message || "Failed to create note")
-            setIsLoading(false)
         }
     } catch (error) {
         alert("An error occurred: " + error.message)
+    } finally {
         setIsLoading(false)
     }
 }
@@ -131,8 +131,7 @@ const CreateNote = () => {
                     <div className='flex justify-end'>
                         <button 
                             type="submit"
-                           disabled={isLoading}
-                            className='bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-bold py-2 px-8 rounded shadow-md transition-all active:scale-95'
+                            className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-8 rounded shadow-md transition-all active:scale-95'
                         >
                             {isLoading ? "Creating.." : "Create"}
                         </button>

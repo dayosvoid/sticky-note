@@ -3,3 +3,141 @@
     box-sizing: border-box;
     font-family: "Manrope", sans-serif;
 }
+
+
+/* Light Theme Variables */
+#light {
+  --bg-primary: #f3f4f6; /* gray-100 */
+  --bg-card: #ffffff;
+  --text-main: #1f2937;  /* gray-800 */
+  --text-sub: #6b7280;   /* gray-500 */
+  --border-color: #d1d5db;
+  --nav-bg: #e5e7eb;     /* gray-200 */
+}
+
+/* Dark Theme Variables */
+#dark {
+  --bg-primary: #111827; /* gray-900 */
+  --bg-card: #1f2937;    /* gray-800 */
+  --text-main: #f9fafb;  /* gray-50 */
+  --text-sub: #9ca3af;   /* gray-400 */
+  --border-color: #374151;
+  --nav-bg: #1f2937;
+}
+
+/* Global styles using the variables */
+.sticky {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+/* You can now use these variables in your other components */
+.bg-gray-200 {
+    background-color: var(--nav-bg) !important;
+}
+
+.text-gray-800 {
+    color: var(--text-main) !important;
+}
+
+.text-gray-600, .text-gray-500 {
+    color: var(--text-sub) !important;
+}
+
+/* App.css */
+
+/* Light Mode Styles (Default) */
+#light .search-form {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    outline-color: #9ca3af;
+}
+
+#light .search-input {
+    color: #1f2937;
+    background: transparent;
+}
+
+#light .search-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Dark Mode Styles */
+#dark .search-form {
+    background-color: #374151; /* gray-700 */
+    border: 1px solid #4b5563; /* gray-600 */
+    outline-color: #7c3aed;    /* purple-500 */
+    transition: all 0.3s ease;
+}
+
+#dark .search-input {
+    color: #f9fafb; /* gray-50 */
+    background: transparent;
+}
+
+#dark .search-input::placeholder {
+    color: #9ca3af; /* gray-400 */
+}
+
+#dark .search-icon {
+    color: #a78bfa; 
+}
+
+/* LIGHT MODE (Default) */
+#search {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  transition: all 0.3s ease;
+}
+
+#search input {
+  color: #1f2937;
+}
+
+/* DARK MODE */
+#dark #search {
+  background-color: #374151; /* gray-700 */
+  border: 1px solid #4b5563; /* gray-600 */
+  outline-color: #7c3aed;    /* purple-600 */
+}
+
+#dark #search input {
+  color: #f9fafb;
+}
+
+#dark #search input::placeholder {
+  color: #9ca3af;
+}
+
+#dark #search svg {
+  color: #a78bfa; /* Light purple for the search icon */
+}
+
+/* LIGHT MODE PIN */
+#light #pin {
+  background: radial-gradient(circle at 30% 30%, #d37d7d, #3b0d84); /* Red push-pin */
+  border-color: #6d28d9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* DARK MODE PIN */
+#dark #pin {
+  /* Give it a metallic or glowing look for dark mode */
+  background: radial-gradient(circle at 30% 30%, #a78bfa, #6d28d9); /* Purple metallic */
+  border-color: #4c1d95;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5); /* Soft glow */
+}
+
+/* Optional: The pin "needle" shadow on the note */
+#pin::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%);
+}

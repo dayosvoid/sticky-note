@@ -13,11 +13,11 @@ const Nav = () => {
         {/* search div */}
             <div className=' flex flex-1 gap-2 items-center'>
                 <div><p className='text-purple-500 font-bold text-xl sm:text-2xl'>Sticktnotes</p></div>
-                <form onSubmit={(e) => e.preventDefault()} className='outline-2 outline-gray-400 px-2 py-0.5 rounded-full flex items-center gap-2 '>
+                <form id='search' onSubmit={(e) => e.preventDefault()} className='outline-2 outline-gray-400 px-2 py-0.5 rounded-full flex items-center gap-2 '>
                     <button className=''>
                         <IoSearch className='size-5 text-gray-600'/>
                     </button>
-                    <input type="search" placeholder='search' className='text-md font-semibold outline-0 pb-1 w-full min-w-0'/>
+                    <input type="search" placeholder='search' className='text-md font-semibold outline-0 sm:pb-1 w-full min-w-0'/>
                 </form>  
             </div>
 
