@@ -6,8 +6,9 @@ import { handleCreateNote } from '../apiCalls/notes'
 
 const CreateNote = () => {
     const dispatch = useDispatch()
-    // stores the form data
-    const [formData, setformData] = useState({ topic: "", note: "" })
+    const [isLoading,setIsLoading] = useState(false)
+    // stores tehe form data
+    const [formData, setformData] = useState({ topic: "", note: "", category:"Personal" })
     // stores the form errors
     const [formError,setFormError] = useState({})
     // handle which input is in focus abd shows error accordingly
@@ -26,12 +27,15 @@ const CreateNote = () => {
     if (!data.note) {
         validationErrors.note = "Note is required";
     }
+
     return validationErrors
+
     }
     // to return error on every dependenvy array change
     useEffect(()=>{
         const errors = validation(formData)
         setFormError(errors)
+        
     },[istouched,formData])
 
     const handleBlur=(e)=>{
@@ -40,24 +44,29 @@ const CreateNote = () => {
     }
 
     const handleSubmit = async (e) => {
+    setIsLoading(true)
     e.preventDefault()
     setIstouched({ topic: true, note: true })
 
-    const validationErrors = validation(formData) // Fix Bug 2
+    const validationErrors = validation(formData)
     if (Object.keys(validationErrors).length > 0) {
         return setFormError(validationErrors)
     }
 
     try {
+        setcreateButton(true)
         const response = await handleCreateNote({ ...formData })
         if (response.success) {
             alert("Note created successfully!")
             dispatch(hideModel())
+            setIsLoading(false)
         } else {
             alert(response.message || "Failed to create note")
+            setIsLoading(false)
         }
     } catch (error) {
         alert("An error occurred: " + error.message)
+        setIsLoading(false)
     }
 }
     return (
@@ -105,12 +114,27 @@ const CreateNote = () => {
                         {/* error field */}
                         {formError.note && istouched.note && <p className='text-red-500 absolute '>{formError?.note}</p>}
                     </span>
+                    {/* category */}
+                    <div className='flex flex-col gap-1'>
+                        <label className='text-sm font-semibold text-gray-600'>Category</label>
+                        <select 
+                            name="category"
+                            value={formData.category}
+                            onChange={(e) => setformData({ ...formData, category: e.target.value })}
+                            className='w-full p-2 outline-none border border-gray-300 rounded focus:border-purple-500 bg-white'
+                        >
+                            <option value="Personal">Personal</option>
+                            <option value="Business">Business</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
                     <div className='flex justify-end'>
                         <button 
                             type="submit"
-                            className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-8 rounded shadow-md transition-all active:scale-95'
+                           disabled={isLoading}
+                            className='bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-bold py-2 px-8 rounded shadow-md transition-all active:scale-95'
                         >
-                            Create Note
+                            {isLoading ? "Creating.." : "Create"}
                         </button>
                     </div>
                 </form>

@@ -9,9 +9,9 @@ export const handleGetAllNote = async() => {
     }
 }
 
-export const handleCreateNote = async({topic,note})=>{
+export const handleCreateNote = async({topic,note,category})=>{
     try {
-        const response = await axiosInstance.post("/notes/create",{topic,note})
+        const response = await axiosInstance.post("/notes/create",{topic,note,category})
         return response.data
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;

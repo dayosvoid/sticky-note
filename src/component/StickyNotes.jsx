@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import moment from 'moment'
 import { handleGetAllNote } from '../apiCalls/notes'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,19 +6,23 @@ import { noteSlice, setReduxNotes } from '../redux/note'
 import { BeatLoader } from 'react-spinners'
 import {io} from 'socket.io-client'
 import { BsThreeDots } from 'react-icons/bs'
+import Sort from './sort'
 
 const socket = io('/')
 
 const StickyNotes = () => {
-
-
-
+  const [filter, setFilter] = useState("All")
   const dispatch = useDispatch()
-  const {note} = useSelector(state =>state.note)
+  // from redux
+  const AllNote = useSelector(state =>state.note.notes) 
 
-    const [notes,setNotes]=useState([])
     const [error,setError]=useState("")
     const [loading,setLoading] =useState(false)
+
+    // allnote from redux and filtered if the inital state of filter is not all
+    const DisplayedNote = useMemo(()=>{
+      return filter ==="All" ? AllNote : AllNote.filter(n => n.category === filter)
+    }, [filter, AllNote])
 
 
 
@@ -27,8 +31,8 @@ const StickyNotes = () => {
           setLoading(true)
             const response = await handleGetAllNote()
             console.log(response.data)
-              setNotes(response.data)
                dispatch(setReduxNotes(response.data))
+              //  setNotes(note)
           setLoading(false)  
         } catch (error) {
                 setError(error.message)
@@ -54,7 +58,7 @@ const StickyNotes = () => {
 
   return (
     
-    <div className='container relative h-screen'>
+    <div className='relative h-screen'>
       {/* loader */}
           {loading && (
           <div className='absolute inset-0 flex items-center justify-center'>
@@ -62,9 +66,14 @@ const StickyNotes = () => {
           </div>
         )}
 
+        {/* passing the setfilter usestate method as props  */}
+        <div className=''>
+           <Sort onFilterChange={(val) => setFilter(val)}/>
+        </div>
+
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
-          {notes && notes.map((note) =>(
-            <div key={note._id} className='min-w-10 min-h-10 p-2  bg-gray-200 rounded-md flex flex-col gap-2'>
+          {DisplayedNote && DisplayedNote.map((note) =>(
+            <div key={note._id} className='min-w-10 min-h-10 py-5 p-2  bg-gray-200 rounded-md flex flex-col gap-2'>
                     {/* timestamp */}
                 <div className='text-start text-gray-400 text-[12px] font-semibold flex justify-between items-center'>
                   <div>{moment(note.updatedAt).fromNow()}</div>
@@ -76,7 +85,14 @@ const StickyNotes = () => {
                       <div className='flex items-start pt-2 justify-center '>
                           <span className='block bg-blue-400 w-2 h-2 rounded-full '></span>
                       </div>
-                    <p>{note.topic}</p>
+
+
+                    <div className='flex gap-2 items-center'>
+                        <p>{note.topic}</p>
+                        <span className='bottom-0 left-1 text-gray-500 sm:text-sm text-[12px] '>
+                          {note?.category}
+                        </span>
+                    </div>
                 </div>
                 {/* the notes dev */}
                 <div >
@@ -87,9 +103,10 @@ const StickyNotes = () => {
                     </p>
                   </div>
                 </div>
+                
             </div>
           ))}
-
+            
           {error && <p className='text-red-500'>{error}</p>}
         </div>
     </div>
