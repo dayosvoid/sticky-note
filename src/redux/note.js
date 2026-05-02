@@ -6,7 +6,7 @@ export const noteSlice = createSlice({
     },
     reducers:{
         setReduxNotes:(state, action)=>{state.notes = action.payload},
-        addNote:(state,action)=>{state.notes.push(payload.action)}
+        addNote: (state, action) => { state.notes.unshift(action.payload) }
     }
 })
 export const {setReduxNotes,addNote} = noteSlice.actions
