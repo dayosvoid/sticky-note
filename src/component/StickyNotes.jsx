@@ -6,7 +6,7 @@ import { setReduxNotes, addNote } from '../redux/note'
 import { BeatLoader } from 'react-spinners'
 import {io} from 'socket.io-client'
 import { BsThreeDots } from 'react-icons/bs'
-import Sort from './sort'
+import Sort from "./Sort"
 import { toast } from 'sonner'
 
 const socket = io('/')
