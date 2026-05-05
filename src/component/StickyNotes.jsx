@@ -64,7 +64,7 @@ const StickyNotes = () => {
     <div className='relative '>
       {/* loader */}
           {loading && (
-          <div className='absolute inset-0 flex items-center justify-center'>
+          <div className='h-screen absolute inset-0 flex items-center justify-center'>
               <BeatLoader color='#7c3aed' size={30} />
           </div>
         )}

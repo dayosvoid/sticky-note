@@ -29,3 +29,4 @@ const Sort = ({onFilterChange}) => {
 }
 
 export default Sort
+
